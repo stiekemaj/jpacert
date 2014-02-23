@@ -50,7 +50,7 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeesByName(String name) {
-        TypedQuery<Employee> query = em.createQuery("select o from Employee o where o.employeeName = :name", Employee.class);
+        TypedQuery<Employee> query = em.createQuery("select o from Employee o where o.name = :name", Employee.class);
         query.setParameter("name", name);
         return query.getResultList();
     }

@@ -1,10 +1,10 @@
 package eu.stiekema.jeroen.jpacert;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,15 +21,12 @@ import javax.persistence.Transient;
  */
 @Entity
 @Access(AccessType.FIELD) // default
-public class Employee {
+public class Employee extends Person {
 
     private static final String LOCAL_AREA_CODE = "031";
 
     @Id
     private long id;
-
-    @Column(name = "name")
-    private String employeeName;
 
     @Column(name = "salary")
     private long employeeSalary;
@@ -48,12 +45,11 @@ public class Employee {
 
     @Deprecated
     protected Employee() {
-
     }
 
-    public Employee(long id, String employeeName, long employeeSalary) {
+    public Employee(long id, String name, long employeeSalary) {
+        super(name);
         this.id = id;
-        this.employeeName = employeeName;
         this.employeeSalary = employeeSalary;
     }
 
@@ -72,7 +68,7 @@ public class Employee {
             return null;
         }
 
-        if (this.phoneNumber.length() == 10) {
+        if (this.phoneNumber.length() == 11) {
             return this.phoneNumber;
         } else {
             return LOCAL_AREA_CODE + this.phoneNumber;
@@ -95,15 +91,6 @@ public class Employee {
         this.id = id;
     }
 
-    @Column(name = "name")
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String name) {
-        this.employeeName = name;
-    }
-
     @Column(name = "salary")
     public long getEmployeeSalary() {
         return employeeSalary;
@@ -121,11 +108,10 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "id=" + id +
-                ", employeeName='" + employeeName + '\'' +
                 ", employeeSalary=" + employeeSalary +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", startDate=" + startDate +
                 ", addresses=" + addresses +
-                '}';
+                "} " + super.toString();
     }
 }
