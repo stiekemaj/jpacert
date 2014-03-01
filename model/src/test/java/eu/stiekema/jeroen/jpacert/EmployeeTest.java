@@ -1,6 +1,7 @@
 package eu.stiekema.jeroen.jpacert;
 
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceUnitUtil;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.junit.Test;
@@ -59,6 +60,24 @@ public class EmployeeTest extends AbstractDBUnitTest {
         Employee result = em.find(Employee.class, 1L);
         assertNotNull(result);
         assertEquals("031595543210", result.getPhoneNumberForDb());
+    }
+
+    /**
+     * Het veld comments is ingesteld op lazy fetch. Met PersistenceUnitUtil kan getest worden of het veld al geladen is
+     * @return
+     * @throws Exception
+     */
+    @Test
+    public void testLazyFetch_commentIsLazyLoaded() {
+        Employee employee = em.find(Employee.class, 100L);
+        em.detach(employee);
+
+        // test if comment is null
+        PersistenceUnitUtil persistenceUnitUtil = em.getEntityManagerFactory().getPersistenceUnitUtil();
+        assertFalse(persistenceUnitUtil.isLoaded(employee, "comments"));
+
+        // call method and assert that comment is filled
+        assertEquals("Kan wel wat loonsverhoging gebruiken", employee.getComments());
     }
 
     @Override

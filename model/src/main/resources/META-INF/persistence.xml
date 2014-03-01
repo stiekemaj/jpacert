@@ -22,6 +22,7 @@
             <property name="eclipselink.cache.shared.default" value="false"/>
             <property name="eclipselink.query-results-cache" value="false"/>
             <property name="eclipselink.refresh" value="true"/>
+            <property name="eclipselink.weaving" value="static"/>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:JpaCertDB;create=true"/>
             <property name="javax.persistence.jdbc.user" value=""/>

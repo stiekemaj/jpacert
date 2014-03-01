@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +39,13 @@ public class Employee extends Person {
 
     @Temporal(TemporalType.DATE)
     private Date startDate;
+
+    @Basic(fetch = FetchType.LAZY)
+    private String comments;
+
+    @Basic(fetch = FetchType.LAZY)
+    @Lob
+    private byte[] picture;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "EMP_ADDRESS",
@@ -102,6 +112,30 @@ public class Employee extends Person {
 
     public Collection<Address> getAddresses() {
         return addresses;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 
     @Override
