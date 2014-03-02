@@ -6,23 +6,24 @@
     <persistence-unit name="EmployeeService">
         <jta-data-source>jdbc/jpacertDS</jta-data-source>
         <properties>
-            <property name="eclipselink.logging.level" value="FINE"/>
-            <!--<property name="eclipselink.target-server" value="SunAS9"/>-->
+            <property name="eclipselink.logging.level" value="WARNING"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="jpacertTestPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>eu.stiekema.jeroen.jpacert.Employee</class>
         <class>eu.stiekema.jeroen.jpacert.Address</class>
+        <class>eu.stiekema.jeroen.jpacert.Department</class>
+        <class>eu.stiekema.jeroen.jpacert.ParkingSpace</class>
         <properties>
-            <property name="eclipselink.logging.level" value="INFO"/>
+            <property name="eclipselink.logging.level" value="WARNING"/>
             <property name="eclipselink.target-database" value="DERBY"/>
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
             <property name="eclipselink.cache.shared.default" value="false"/>
             <property name="eclipselink.query-results-cache" value="false"/>
             <property name="eclipselink.refresh" value="true"/>
-            <property name="eclipselink.weaving" value="static"/>
+            <!--<property name="eclipselink.weaving" value="static"/>-->
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:JpaCertDB;create=true"/>
             <property name="javax.persistence.jdbc.user" value=""/>

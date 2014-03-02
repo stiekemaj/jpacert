@@ -4,6 +4,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnitUtil;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.excel.XlsDataSet;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -68,6 +69,7 @@ public class EmployeeTest extends AbstractDBUnitTest {
      * @throws Exception
      */
     @Test
+    @Ignore("static weaving uitgezet")
     public void testLazyFetch_commentIsLazyLoaded() {
         Employee employee = em.find(Employee.class, 100L);
         em.detach(employee);
@@ -78,6 +80,27 @@ public class EmployeeTest extends AbstractDBUnitTest {
 
         // call method and assert that comment is filled
         assertEquals("Kan wel wat loonsverhoging gebruiken", employee.getComments());
+    }
+
+    @Test
+    public void testEnumeration() {
+        Employee employee = em.find(Employee.class, 100L);
+        assertEquals(EmployeeType.FULL_TIME_EMPLOYEE, employee.getEmployeeType());
+    }
+
+    @Test
+    public void testGeneratedValueOfPrimaryKey() {
+        Employee employee = new Employee("Test", 1000);
+        em.persist(employee);
+        assertNotNull(employee.getId());
+    }
+
+    @Test
+    public void testEmployeeDepartment() {
+        Employee employee = em.find(Employee.class, 100L);
+        assertNotNull(employee);
+        assertNotNull(employee.getDepartment());
+        assertEquals(100L, employee.getId());
     }
 
     @Override

@@ -9,12 +9,19 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -29,6 +36,8 @@ public class Employee extends Person {
     private static final String LOCAL_AREA_CODE = "031";
 
     @Id
+    @TableGenerator(name = "employeeSeq", table = "serial", pkColumnName = "serial_id", pkColumnValue = "employee", valueColumnName = "serial_value")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "employeeSeq")
     private long id;
 
     @Column(name = "salary")
@@ -47,6 +56,17 @@ public class Employee extends Person {
     @Lob
     private byte[] picture;
 
+    @Enumerated(EnumType.STRING)
+    private EmployeeType employeeType;
+
+    @OneToOne
+    @JoinColumn(name = "fk_parkingspace")
+    private ParkingSpace parkingSpace;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_department")
+    private Department department;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "EMP_ADDRESS",
             joinColumns = @JoinColumn(name = "employee_id"),
@@ -60,6 +80,11 @@ public class Employee extends Person {
     public Employee(long id, String name, long employeeSalary) {
         super(name);
         this.id = id;
+        this.employeeSalary = employeeSalary;
+    }
+
+    public Employee(String name, long employeeSalary) {
+        super(name);
         this.employeeSalary = employeeSalary;
     }
 
@@ -136,6 +161,22 @@ public class Employee extends Person {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
     }
 
     @Override

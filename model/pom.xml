@@ -79,25 +79,25 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <tasks>
-                                <java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"
-                                      classpathref="maven.test.classpath" fork="true">
-                                    <arg line="-loglevel SEVERE -persistenceinfo src/main/resources target/classes target/classes"/>
-                                </java>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<artifactId>maven-antrun-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>process-classes</phase>-->
+                        <!--<configuration>-->
+                            <!--<tasks>-->
+                                <!--<java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"-->
+                                      <!--classpathref="maven.test.classpath" fork="true">-->
+                                    <!--<arg line="-loglevel SEVERE -persistenceinfo src/main/resources target/classes target/classes"/>-->
+                                <!--</java>-->
+                            <!--</tasks>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>run</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 
