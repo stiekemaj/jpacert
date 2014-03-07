@@ -25,16 +25,15 @@ public class EmployeeTest extends AbstractDBUnitTest {
     public void testMixedAccess_SuperClassHasPropertyAccess_SubClassHasFieldAccess() {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        Employee employee = new Employee(1L, "Name", 10000);
+        Employee employee = new Employee("Name", 10000);
         em.persist(employee);
         transaction.commit();
 
         clearFirstLevelCache();
 
         // verify if entity is in database
-        Employee result = em.find(Employee.class, 1L);
+        Employee result = em.find(Employee.class, employee.getId());
         assertNotNull(result);
-        assertEquals(1L, result.getId());
         assertEquals("Name", result.getName());
         assertEquals(10000, result.getEmployeeSalary());
         assertNotNull(result.getAddresses());
@@ -49,7 +48,7 @@ public class EmployeeTest extends AbstractDBUnitTest {
     public void testMixedAccess_SinglePropertyAccessInFieldAccessClass() {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        Employee employee = new Employee(1L, "Name", 10000);
+        Employee employee = new Employee("Name", 10000);
         em.persist(employee);
 
         // set phonenumber property
@@ -58,7 +57,7 @@ public class EmployeeTest extends AbstractDBUnitTest {
 
         clearFirstLevelCache();
 
-        Employee result = em.find(Employee.class, 1L);
+        Employee result = em.find(Employee.class, employee.getId());
         assertNotNull(result);
         assertEquals("031595543210", result.getPhoneNumberForDb());
     }
@@ -68,8 +67,7 @@ public class EmployeeTest extends AbstractDBUnitTest {
      * @return
      * @throws Exception
      */
-    @Test
-    @Ignore("static weaving uitgezet")
+    @Test @Ignore
     public void testLazyFetch_commentIsLazyLoaded() {
         Employee employee = em.find(Employee.class, 100L);
         em.detach(employee);
@@ -93,6 +91,9 @@ public class EmployeeTest extends AbstractDBUnitTest {
         Employee employee = new Employee("Test", 1000);
         em.persist(employee);
         assertNotNull(employee.getId());
+        clearFirstLevelCache();
+        employee = em.find(Employee.class, employee.getId());
+        assertNotNull(employee);
     }
 
     @Test
@@ -101,6 +102,17 @@ public class EmployeeTest extends AbstractDBUnitTest {
         assertNotNull(employee);
         assertNotNull(employee.getDepartment());
         assertEquals(100L, employee.getId());
+    }
+
+    @Test
+    public void testUndirectionalLazyOneToManyList() {
+        Employee employee = em.find(Employee.class, 100L);
+        assertNotNull(employee);
+        assertNotNull(employee.getPhoneList());
+        PersistenceUnitUtil persistenceUnitUtil = em.getEntityManagerFactory().getPersistenceUnitUtil();
+        boolean listIsLoaded = persistenceUnitUtil.isLoaded(employee.getPhoneList());
+        assertFalse(listIsLoaded);
+        assertEquals(2, employee.getPhoneList().size());
     }
 
     @Override

@@ -24,9 +24,10 @@ public class EmployeeService {
         return this.em;
     }
 
-    public void createEmployee(long id, String name, long salary) {
-        Employee employee = new Employee(id, name, salary);
+    public long createEmployee(String name, long salary) {
+        Employee employee = new Employee(name, salary);
         getEntityManager().persist(employee);
+        return employee.getId();
     }
 
     public void createAddress(long id, String street, String city, String state) {

@@ -29,8 +29,7 @@ public class MyServlet extends HttpServlet {
         if ("createEmployee".equals(action)) {
             String name = request.getParameter("name");
             String salary = request.getParameter("salary");
-            long id = Long.parseLong(request.getParameter("id"));
-            bean.createEmployee(id, name, Long.parseLong(salary));
+            long id = bean.createEmployee(name, Long.parseLong(salary));
             Employee employee = bean.findEmployeeById(id);
             response.getOutputStream().println("Employee created");
             response.getOutputStream().println(employee.toString());

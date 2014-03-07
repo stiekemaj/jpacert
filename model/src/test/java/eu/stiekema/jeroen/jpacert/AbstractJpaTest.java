@@ -3,7 +3,6 @@ package eu.stiekema.jeroen.jpacert;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -16,20 +15,14 @@ public abstract class AbstractJpaTest {
 
     @Before
     public void setUp() throws Exception {
-        emf = Persistence.createEntityManagerFactory("jpacertTestPU");
+        emf = Persistence.createEntityManagerFactory("jpacertTestPUHibernate");
         em = emf.createEntityManager();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        em.close();
-        emf.close();
-    }
-
     protected void clearFirstLevelCache() {
-        em.getTransaction().begin();
-        em.flush();
-        em.getTransaction().commit();
-        em.clear();
+        if (em.getTransaction().isActive()) {
+            em.flush();
+            em.clear();
+        }
     }
 }

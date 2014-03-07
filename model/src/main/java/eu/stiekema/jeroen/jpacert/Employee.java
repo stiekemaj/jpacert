@@ -1,11 +1,12 @@
 package eu.stiekema.jeroen.jpacert;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Basic;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
@@ -67,25 +69,25 @@ public class Employee extends Person {
     @JoinColumn(name = "fk_department")
     private Department department;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "EMP_ADDRESS",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Collection<Address> addresses;
 
+    @OneToMany
+    @JoinTable(name = "emp_phone", joinColumns = @JoinColumn(name = "emp_id"), inverseJoinColumns = @JoinColumn(name = "phone_id"))
+    private List<Phone> phoneList;
+
     @Deprecated
     protected Employee() {
-    }
-
-    public Employee(long id, String name, long employeeSalary) {
-        super(name);
-        this.id = id;
-        this.employeeSalary = employeeSalary;
     }
 
     public Employee(String name, long employeeSalary) {
         super(name);
         this.employeeSalary = employeeSalary;
+        this.addresses = new ArrayList<Address>();
+        this.phoneList = new ArrayList<Phone>();
     }
 
     public String getPhoneNumber() {
@@ -177,6 +179,10 @@ public class Employee extends Person {
 
     public void setEmployeeType(EmployeeType employeeType) {
         this.employeeType = employeeType;
+    }
+
+    public List<Phone> getPhoneList() {
+        return phoneList;
     }
 
     @Override
